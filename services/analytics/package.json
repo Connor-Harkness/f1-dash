@@ -1,0 +1,20 @@
+{
+  "name": "@f1-dash/analytics",
+  "version": "1.0.0",
+  "description": "F1 Dashboard Analytics Service - TimescaleDB analytics API",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "@f1-dash/timescale": "file:../../lib/timescale",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

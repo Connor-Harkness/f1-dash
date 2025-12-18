@@ -1,35 +1,31 @@
-FROM rust:alpine AS base
+FROM node:20-alpine AS base
 
-RUN apk add --no-cache musl-dev pkgconfig openssl libressl-dev
-
-FROM base AS builder-base
 WORKDIR /usr/src/app
-COPY . .
 
-FROM builder-base AS api-builder
-RUN cargo b -r -p api
+# Copy package files for all services
+COPY package.json ./
+COPY lib/ ./lib/
+COPY services/ ./services/
 
-FROM builder-base AS live-builder
-RUN cargo b -r -p live
+# Install dependencies
+RUN npm install --workspaces
 
-FROM builder-base AS importer-builder
-RUN cargo b -r -p importer
+# API Service
+FROM base AS api
+WORKDIR /usr/src/app/services/api
+CMD ["node", "src/index.js"]
 
-FROM builder-base AS analytics-builder
-RUN cargo b -r -p analytics
+# Live Service
+FROM base AS live
+WORKDIR /usr/src/app/services/live
+CMD ["node", "src/index.js"]
 
-FROM alpine:3 AS api
-COPY --from=api-builder /usr/src/app/target/release/api /api
-CMD [ "/api" ]
+# Analytics Service
+FROM base AS analytics
+WORKDIR /usr/src/app/services/analytics
+CMD ["node", "src/index.js"]
 
-FROM alpine:3 AS live
-COPY --from=live-builder /usr/src/app/target/release/live /live
-CMD [ "/live" ]
-
-FROM alpine:3 AS importer
-COPY --from=importer-builder /usr/src/app/target/release/importer /importer
-CMD [ "/importer" ]
-
-FROM alpine:3 AS analytics
-COPY --from=analytics-builder /usr/src/app/target/release/analytics /analytics
-CMD [ "/analytics" ]
+# Importer Service
+FROM base AS importer
+WORKDIR /usr/src/app/services/importer
+CMD ["node", "src/index.js"]

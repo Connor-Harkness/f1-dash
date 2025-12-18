@@ -6,18 +6,34 @@ Also spins up a HTTP server with a SSE endpoint where initially the maintained f
 ## Usage
 
 ```bash
-cargo r -p live
+cd services/live
+npm install
+npm start
 ```
 
-You can set the port and address, origin and log level and websocket URL with these env vars:
+Or from the root:
+
+```bash
+npm run start:live
+```
+
+## Configuration
+
+You can set the port and address, origin and websocket URL with these env vars:
 
 ```bash
 # The address and port where it starts
-LIVE_BACKEND_ADDRESS=localhost:4000
+LIVE_ADDRESS=0.0.0.0:4000
 
-# The origin for CORS
+# The origin for CORS (semicolon separated)
 ORIGIN=http://localhost:3000
 
-# Sets the rust log level
-RUST_LOG="live=debug,info"
+# Optional: Custom WebSocket URL (for simulator/testing)
+WS_URL=ws://localhost:8080
 ```
+
+## Endpoints
+
+- `GET /api/health` - Health check endpoint
+- `GET /api/sse` - Server-Sent Events stream for live timing data
+- `GET /api/drivers` - Get current driver list
