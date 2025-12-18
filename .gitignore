@@ -5,9 +5,6 @@
 .env
 compose.env
 
-# compiled
-**/target
-
 # node
 node_modules/
 *.log
