@@ -1,0 +1,34 @@
+{
+  "name": "f1-dash-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Real-time Formula 1 telemetry and timing",
+  "workspaces": [
+    "dash",
+    "services/api",
+    "services/live",
+    "services/analytics",
+    "services/importer",
+    "lib/client",
+    "lib/data",
+    "lib/timescale"
+  ],
+  "scripts": {
+    "dev:dashboard": "cd dash && yarn dev",
+    "dev:api": "cd services/api && node src/index.js",
+    "dev:live": "cd services/live && node src/index.js",
+    "dev:analytics": "cd services/analytics && node src/index.js",
+    "build:dashboard": "cd dash && yarn build",
+    "start:dashboard": "cd dash && yarn start",
+    "start:api": "cd services/api && node src/index.js",
+    "start:live": "cd services/live && node src/index.js",
+    "start:analytics": "cd services/analytics && node src/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0"
+  }
+}

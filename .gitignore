@@ -8,5 +8,13 @@ compose.env
 # compiled
 **/target
 
+# node
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
 # data
 *.data.*
