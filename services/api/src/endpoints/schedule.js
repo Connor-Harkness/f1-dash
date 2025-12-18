@@ -42,7 +42,16 @@ function parseName(fullName) {
 function getProperty(vevent, propertyName) {
   try {
     const prop = vevent.getFirstProperty(propertyName);
-    return prop ? prop.getFirstValue() : null;
+    if (!prop) return null;
+    
+    const value = prop.getFirstValue();
+    
+    // Handle ICAL.Time objects
+    if (value && typeof value.toJSDate === 'function') {
+      return value.toJSDate();
+    }
+    
+    return value;
   } catch (error) {
     return null;
   }
@@ -67,8 +76,8 @@ function newRound(vevent, name, kind) {
     return null;
   }
 
-  const startDate = new Date(start.toJSDate()).toISOString();
-  const endDate = new Date(end.toJSDate()).toISOString();
+  const startDate = new Date(start).toISOString();
+  const endDate = new Date(end).toISOString();
 
   return {
     name: name,
@@ -96,8 +105,8 @@ function updateRound(vevent, round, kind) {
     return;
   }
 
-  const startDate = new Date(start.toJSDate()).toISOString();
-  const endDate = new Date(end.toJSDate()).toISOString();
+  const startDate = new Date(start).toISOString();
+  const endDate = new Date(end).toISOString();
 
   round.sessions.push({
     kind: kind,
